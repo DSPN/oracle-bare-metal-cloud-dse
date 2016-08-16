@@ -1,0 +1,12 @@
+{
+  "regions": [
+    [
+      "phoenix-1",
+      "phoenix-2",
+      "phoenix-3"
+    ]
+  ],
+  "nodesPerAvailabilityDomain": 2,
+  "vmSize": "shape2",
+  "KeyName": "datastax"
+}
