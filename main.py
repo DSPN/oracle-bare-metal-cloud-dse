@@ -2,7 +2,7 @@ import email.utils
 import SignedRequestAuth
 import json
 
-# pip requests
+# pip install requests
 import requests
 
 

@@ -1,0 +1,15 @@
+{
+  "availabilityDomains": [
+    [
+      "FcAL%3APHX-AD-1",
+      "FcAL%3APHX-AD-2",
+      "FcAL%3APHX-AD-3"
+    ]
+  ],
+  "nodesPerAvailabilityDomain": 2,
+  "shape": "x5-2.36.256",
+  "userOCID": "ocid1.user.oc1..123",
+  "compartmentId": "ocid1.tenancy.oc1..123",
+  "apiKeyFingerprint": "some fingerprint",
+  "privateKeyPath": "/Users/ben/.ssh/id_rsa"
+}

@@ -3,3 +3,6 @@
 
 # PyCharm files
 *.idea
+
+# Don't upload my keys...
+clusterParameters.json
