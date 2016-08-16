@@ -1,3 +1,13 @@
+import base64
+import email.utils
+import hashlib
+
+# pip install httpsig requests six
+import httpsig.requests_auth
+import requests
+import six
+
+
 class SignedRequestAuth(requests.auth.AuthBase):
     """A requests auth instance that can be reused across requests"""
     generic_headers = [

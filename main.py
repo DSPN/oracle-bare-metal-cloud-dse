@@ -1,11 +1,9 @@
-import base64
 import email.utils
-import hashlib
+import SignedRequestAuth
+import json
 
-# pip install httpsig requests six
-import httpsig.requests_auth
+# pip requests
 import requests
-import six
 
 
 def main():
