@@ -5,6 +5,8 @@ import json
 # pip install requests
 import requests
 
+# Need to ensure TLS/SSL is installed
+# https://comeroutewithme.com/2016/03/13/python-osx-openssl-issue/
 
 def main():
   with open('clusterParameters.json') as inputFile:
