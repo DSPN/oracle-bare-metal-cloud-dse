@@ -25,3 +25,17 @@ First, you'll need to creat a Cloud Network.  In this case we've called ours "my
 
 We are going to use the root compartment that is created by default.  For the compartment ID, specify your "Tenancy ID."
 
+You will need to edit the subnet_id, compartment_id and ssh_public_key to the values in your environment.
+
+When complete you can run the following command to deploy your cluster:
+
+    irb createMachine.rb
+    
+On completion you can log into the Console to view your machines.
+
+## Installing DataStax Enterprise
+
+Now that your instances are running, we are going to install DataStax Enterprise (DSE).  This will be a two step process:
+* Install OpsCenter
+* Use OpsCenter Lifecycle Manager (LCM) to install and configure DSE on each node
+
