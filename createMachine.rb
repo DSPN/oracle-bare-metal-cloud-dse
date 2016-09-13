@@ -10,18 +10,18 @@ $i = 0
 while $i < 3  do
    puts("Deploying machine number #$i" )
 
-#   request = OracleBMC::LaunchInstanceDetails.new
-#   request.availability_domain = availability_domain[$i]
-#   request.compartment_id = compartment_id
-#   request.display_name = 'my_instance'
-#   request.image_id = 'ol7.2-base-0.0.2'
-#   request.shape = 'BM.Standard1.36'
-#   request.subnet_id = subnet_id[$i]
-#   request.metadata = {'ssh_authorized_keys' => ssh_public_key}
+   request = OracleBMC::LaunchInstanceDetails.new
+   request.availability_domain = availability_domain[$i]
+   request.compartment_id = compartment_id
+   request.display_name = 'my_instance#$i'
+   request.image_id = 'ol7.2-base-0.0.2'
+   request.shape = 'BM.Standard1.36'
+   request.subnet_id = subnet_id[$i]
+   request.metadata = {'ssh_authorized_keys' => ssh_public_key}
 
-#   api = OracleBMC::ComputeApi.new
-#   response = api.launch_instance(request)
-#   response = api.get_instance(response.data.id).wait_until(:lifecycle_state, OracleBMC::Instance::LIFECYCLE_STATE_RUNNING, max_wait_seconds:300)
+   api = OracleBMC::ComputeApi.new
+   response = api.launch_instance(request)
+   response = api.get_instance(response.data.id).wait_until(:lifecycle_state, OracleBMC::Instance::LIFECYCLE_STATE_RUNNING, max_wait_seconds:300)
 
    $i +=1
 end
