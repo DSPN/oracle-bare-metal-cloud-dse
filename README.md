@@ -21,7 +21,7 @@ At this point your Ruby SDK should be all set up.  You can run this command to t
 
 ## Setting up Instances
 
-First, you'll need to creat a Cloud Network.  In this case we've called ours "mycloudnetwork."  When you create the Cloud Network, it creates three subnets, one in each availability domain.  We are going to map availability domains to racks.
+First, you'll need to create a Cloud Network.  In this case we've called ours "mycloudnetwork."  When you create the Cloud Network, it creates three subnets, one in each availability domain.  We are going to map availability domains to racks.
 
 We are going to use the root compartment that is created by default.  For the compartment ID, specify your "Tenancy ID."
 
@@ -38,4 +38,3 @@ On completion you can log into the Console to view your machines.
 Now that your instances are running, we are going to install DataStax Enterprise (DSE).  This will be a two step process:
 * Install OpsCenter
 * Use OpsCenter Lifecycle Manager (LCM) to install and configure DSE on each node
-
