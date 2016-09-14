@@ -43,10 +43,24 @@ You will need to open a terminal session to the first machine.  To ssh to the ma
 
     ssh -i .ssh/id_rsa opc@<IP Address>
 
-Once logged into the machine run this command to get an install script that will set up OpsCenter:
+Once logged into the machine run these commands to get an install script that will set up OpsCenter:
 
-    curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/opscenter.sh?token=AH5jJURyJ2Gma_UmBTVX29uCuRdWpySRks5X4dSKwA%3D%3D
+    curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/opscenter.sh > opscenter.sh
+    chmod +x opscenter.sh
+    ./opscenter.sh
 
+Ok, now OpsCenter is installed and running.  At this point we need to open port 8888 in the console so we can access OpsCenter and run LCM.
+
+Oracle Linux also runs iptables by default.  We can stop iptables by running the command:
+
+    service firewalld stop
+    chkconfig firewalld off
+    
+At this point OpsCenter should be accessible on port 8888 of the public IP address of node datastax0:
+
+![](./img/welcometoopscenter.png)
+
+Now we are going to click "Create a new cluster" and use LCM to deploy DSE to each of our three nodes.
 
 ## Deleting the Cluster
 
