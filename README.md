@@ -38,3 +38,12 @@ On completion you can log into the Console to view your machines.
 Now that your instances are running, we are going to install DataStax Enterprise (DSE).  This will be a two step process:
 * Install OpsCenter
 * Use OpsCenter Lifecycle Manager (LCM) to install and configure DSE on each node
+
+You will need to open a terminal session to the first machine.  To ssh to the machine, find its public IP in the console and then run the command:
+
+    ssh -i .ssh/id_rsa opc@<IP Address>
+
+Once logged into the machine run this command to get 
+## Deleting the Cluster
+
+To delete the cluster, login to the console and click "terminate" on each node.

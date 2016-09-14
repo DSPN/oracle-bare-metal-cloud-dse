@@ -13,9 +13,9 @@ while $i < 3  do
    request = OracleBMC::LaunchInstanceDetails.new
    request.availability_domain = availability_domain[$i]
    request.compartment_id = compartment_id
-   request.display_name = "my_instance#$i"
+   request.display_name = "datastax#$i"
    request.image_id = 'ol7.2-base-0.0.2'
-   request.shape = 'BM.Standard1.36'
+   request.shape = 'BM.HighIO1.36'
    request.subnet_id = subnet_id[$i]
    request.metadata = {'ssh_authorized_keys' => ssh_public_key}
 
