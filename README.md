@@ -39,22 +39,22 @@ Now that your instances are running, we are going to install DataStax Enterprise
 * Install OpsCenter
 * Use OpsCenter Lifecycle Manager (LCM) to install and configure DSE on each node
 
-You will need to open a terminal session to the first machine.  To ssh to the machine, find its public IP in the console and then run the command:
+You will need to open a terminal session to the each machine.  To ssh to the machine, find its public IP in the console and then run the command:
 
-    ssh -i .ssh/id_rsa opc@<IP Address>
+    ssh -i ~/.ssh/id_rsa opc@<IP Address>
 
-Once logged into the machine run these commands to get an install script that will set up OpsCenter:
+Oracle Linux runs iptables by default.  We can stop iptables by running the following command.  You will need to do this on each node.
+
+    service firewalld stop
+    chkconfig firewalld off
+
+Now, on the first machine, datastax0, run these commands to get an install script that will set up OpsCenter:
 
     curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/opscenter.sh > opscenter.sh
     chmod +x opscenter.sh
     ./opscenter.sh
 
 Ok, now OpsCenter is installed and running.  At this point we need to open port 8888 in the console so we can access OpsCenter and run LCM.
-
-Oracle Linux also runs iptables by default.  We can stop iptables by running the following command.  You will need to do this on each node.
-
-    service firewalld stop
-    chkconfig firewalld off
     
 At this point OpsCenter should be accessible on port 8888 of the public IP address of node datastax0:
 
