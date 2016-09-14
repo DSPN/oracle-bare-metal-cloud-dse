@@ -62,6 +62,10 @@ At this point OpsCenter should be accessible on port 8888 of the public IP addre
 
 Now we are going to click "Create a new cluster" and use LCM to deploy DSE to each of our three nodes.
 
+## Configuring Data Directory
+
+You will need to mount and configure your data drives.
+
 ## Deleting the Cluster
 
 To delete the cluster, login to the console and click "terminate" on each node.
