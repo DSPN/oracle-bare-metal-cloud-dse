@@ -57,12 +57,14 @@ Now, on the first machine, datastax0, run these commands to get an install scrip
     ./opscenter.sh
 
 Ok, now OpsCenter is installed and running.  At this point we need to open port 8888 in the console so we can access OpsCenter and run LCM.
-    
+
 At this point OpsCenter should be accessible on port 8888 of the public IP address of node datastax0:
 
 ![](./img/welcometoopscenter.png)
 
-Now we are going to click "Create a new cluster" and use LCM to deploy DSE to each of our three nodes.
+Now we are going to click "Create a new cluster" and use LCM to deploy DSE to each of our three nodes.  When complete your cluster should show three nodes:
+
+![](./img/opscentercluster.png)
 
 ## Configuring Data Directory
 
