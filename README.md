@@ -53,6 +53,7 @@ Now, on the first machine, datastax0, run these commands to get an install scrip
 
     curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/opscenter.sh > opscenter.sh
     chmod +x opscenter.sh
+    sudo su
     ./opscenter.sh
 
 Ok, now OpsCenter is installed and running.  At this point we need to open port 8888 in the console so we can access OpsCenter and run LCM.
