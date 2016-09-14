@@ -51,7 +51,7 @@ Once logged into the machine run these commands to get an install script that wi
 
 Ok, now OpsCenter is installed and running.  At this point we need to open port 8888 in the console so we can access OpsCenter and run LCM.
 
-Oracle Linux also runs iptables by default.  We can stop iptables by running the command:
+Oracle Linux also runs iptables by default.  We can stop iptables by running the following command.  You will need to do this on each node.
 
     service firewalld stop
     chkconfig firewalld off
