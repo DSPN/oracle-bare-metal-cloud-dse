@@ -45,6 +45,7 @@ You will need to open a terminal session to the each machine.  To ssh to the mac
 
 Oracle Linux runs iptables by default.  We can stop iptables by running the following command.  You will need to do this on each node.
 
+    sudo su
     service firewalld stop
     chkconfig firewalld off
 
@@ -64,7 +65,7 @@ Now we are going to click "Create a new cluster" and use LCM to deploy DSE to ea
 
 ## Configuring Data Directory
 
-You will need to mount and configure your data drives.
+You will need to mount and configure your data drives to make use of the NVME drives on these machines.
 
 ## Deleting the Cluster
 
