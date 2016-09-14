@@ -2,11 +2,11 @@
 
 # This scripts installs and starts OpsCenter.  After it runs you can use LCM to build your cluster.
 
-curl https://raw.githubusercontent.com/DSPN/install-datastax-redhat/master/bin/opscenter/install.sh > install.sh
-curl https://raw.githubusercontent.com/DSPN/install-datastax-redhat/master/bin/opscenter/start.sh > start.sh
+curl https://github.com/DSPN/install-datastax-redhat/archive/master.zip
+unzip master.zip
 
-chmod +x install.sh
-chmod +x opscenter.sh
+sudo su
 
-./install.sh oracle
-./start.sh
+./bin/os/install_java.sh
+./bin/opscenter/install.sh oracle
+./bin/opscenter/start.sh
