@@ -43,7 +43,11 @@ You will need to open a terminal session to the first machine.  To ssh to the ma
 
     ssh -i .ssh/id_rsa opc@<IP Address>
 
-Once logged into the machine run this command to get 
+Once logged into the machine run this command to get an install script that will set up OpsCenter:
+
+    curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/opscenter.sh?token=AH5jJURyJ2Gma_UmBTVX29uCuRdWpySRks5X4dSKwA%3D%3D
+
+
 ## Deleting the Cluster
 
 To delete the cluster, login to the console and click "terminate" on each node.
