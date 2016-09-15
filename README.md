@@ -71,14 +71,6 @@ When complete your cluster should show three nodes:
 
 ![](./img/opscentercluster.png)
 
-## Configuring Data Directory
-
-You will need to mount and configure your data drives to make use of the NVME drives on these machines.
-
-First, we need to ssh to each node and run the following commands to mount the drive:
-
-    asd
-
 ## Deleting the Cluster
 
 To delete the cluster, login to the console and click "terminate" on each node.
