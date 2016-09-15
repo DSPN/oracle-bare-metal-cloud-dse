@@ -18,5 +18,10 @@ sudo pvcreate /dev/nvme0n1 /dev/nvme1n1 /dev/nvme2n1 /dev/nvme3n1
 sudo vgcreate vg-nvme /dev/nvme0n1 /dev/nvme1n1 /dev/nvme2n1 /dev/nvme3n1
 
 sudo lvcreate --name lv --size 11.6T vg-nvme
+sudo mkfs.ext4 /dev/vg-nvme/lv
+
 sudo mkdir /cassandra
 sudo mount /dev/vg-nvme/lv /cassandra
+
+sudo chown cassandra /cassandra
+sudo chgrp cassandra /cassandra
