@@ -71,6 +71,12 @@ When complete your cluster should show three nodes:
 
 ![](./img/opscentercluster.png)
 
+## Testing the Cluster
+
+Now you can login and try running Cassandra Stress
+
+    cassandra-stress write n=1000000 -rate threads=50 -mode native cql3 user=cassandra password=cassandra -node 10.0.2.4
+
 ## Deleting the Cluster
 
 To delete the cluster, login to the console and click "terminate" on each node.
