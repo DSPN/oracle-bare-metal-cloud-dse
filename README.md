@@ -61,7 +61,13 @@ At this point OpsCenter should be accessible on port 8888 of the public IP addre
 
 ![](./img/welcometoopscenter.png)
 
-Now we are going to click "Create a new cluster" and use LCM to deploy DSE to each of our three nodes.  When complete your cluster should show three nodes:
+Now we are going to click "Create a new cluster" and use LCM to deploy DSE to each of our three nodes.  
+
+A few notes:
+* Use the private IP addresses for your nodes
+* In your config profile change the directories for data, commit log and caches from /var/lib/cassandra/... to /cassandra/...
+
+When complete your cluster should show three nodes:
 
 ![](./img/opscentercluster.png)
 
