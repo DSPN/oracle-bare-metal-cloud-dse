@@ -46,8 +46,8 @@ You will need to open a terminal session to the each machine.  To ssh to the mac
 Oracle Linux runs iptables by default.  We can stop iptables by running the following command.  You will need to do this on each node.
 
     curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/bin/dse.sh > dse.sh
-    chmod +x opscenter.sh
-    ./opscenter.sh
+    chmod +x dse.sh
+    ./dse.sh
 
 Now, on the first machine, datastax0, run these commands to get an install script that will set up OpsCenter:
 
