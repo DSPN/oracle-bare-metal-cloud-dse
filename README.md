@@ -45,15 +45,14 @@ You will need to open a terminal session to the each machine.  To ssh to the mac
 
 Oracle Linux runs iptables by default.  We can stop iptables by running the following command.  You will need to do this on each node.
 
-    sudo su
-    service firewalld stop
-    chkconfig firewalld off
+    curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/bin/dse.sh > dse.sh
+    chmod +x opscenter.sh
+    ./opscenter.sh
 
 Now, on the first machine, datastax0, run these commands to get an install script that will set up OpsCenter:
 
-    curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/opscenter.sh > opscenter.sh
+    curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/bin/opscenter.sh > opscenter.sh
     chmod +x opscenter.sh
-    sudo su
     ./opscenter.sh
 
 Ok, now OpsCenter is installed and running.  At this point we need to open port 8888 in the console so we can access OpsCenter and run LCM.
@@ -69,6 +68,10 @@ Now we are going to click "Create a new cluster" and use LCM to deploy DSE to ea
 ## Configuring Data Directory
 
 You will need to mount and configure your data drives to make use of the NVME drives on these machines.
+
+First, we need to ssh to each node and run the following commands to mount the drive:
+
+    asd
 
 ## Deleting the Cluster
 
