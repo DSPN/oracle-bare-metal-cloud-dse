@@ -43,7 +43,7 @@ You will need to open a terminal session to the each machine.  To ssh to the mac
 
     ssh -i ~/.ssh/id_rsa opc@<IP Address>
 
-Oracle Linux runs iptables by default.  We can stop iptables by running the following command.  You will need to do this on each node.
+Oracle Linux runs iptables by default.  We'll need to stop iptables for the cluster to be able to communicate.  The machines also need their drives mounted.  We have provided a script to automate this. You will need to do run the script on each node.
 
     curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/bin/dse.sh > dse.sh
     chmod +x dse.sh

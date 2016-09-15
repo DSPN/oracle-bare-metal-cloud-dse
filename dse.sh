@@ -23,5 +23,4 @@ sudo mkfs.ext4 /dev/vg-nvme/lv
 sudo mkdir /cassandra
 sudo mount /dev/vg-nvme/lv /cassandra
 
-sudo chown cassandra /cassandra
-sudo chgrp cassandra /cassandra
+sudo chmod 777 /cassandra
