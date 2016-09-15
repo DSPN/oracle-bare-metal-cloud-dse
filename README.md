@@ -75,7 +75,7 @@ When complete your cluster should show three nodes:
 
 Now you can login and try running Cassandra Stress
 
-    cassandra-stress write n=1000000 -rate threads=50 -mode native cql3 user=cassandra password=cassandra -node 10.0.2.4
+    cassandra-stress write n=1000000 -rate threads=10 -mode native cql3 cl=QUORUM user=cassandra password=cassandra -node 10.0.2.4
 
 ## Deleting the Cluster
 
