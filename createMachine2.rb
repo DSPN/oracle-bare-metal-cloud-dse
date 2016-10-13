@@ -15,7 +15,7 @@ while $i < 1  do
    request.subnet_id = subnet_id[$i]
    request.availability_domain = availability_domain[$i]
    request.compartment_id = compartment_id
-   request.image_id = 'Oracle-Linux-7.2-2016.09.18-0'
+   request.image = 'Oracle-Linux-7.2-2016.09.18-0'
    request.shape = 'BM.HighIO1.36'
    request.metadata = {'ssh_authorized_keys' => ssh_public_key}
 
