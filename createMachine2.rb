@@ -10,7 +10,7 @@ $i = 0
 while $i < 1  do
    puts("Deploying machine number #$i" )
 
-   request = OracleBMC::LaunchInstanceRequest.new
+   request = OracleBMC::LaunchInstanceDetails.new
    request.display_name = "datastax#$i"
    request.subnet_id = subnet_id[$i]
    request.availability_domain = availability_domain[$i]
