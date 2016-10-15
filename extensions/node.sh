@@ -32,7 +32,6 @@ while IFS=$': \t' read -a line ;do
     [ -z "${line%inet}" ] && ip=${line[${#line[1]}>4?1:2]} &&
         [ "${ip#127.0.0.1}" ] && local_ip=$ip
   done< <(LANG=C /sbin/ifconfig)
-echo $local_ip
 
 cd /home/opc
 curl -o master.zip https://codeload.github.com/DSPN/install-datastax-redhat/zip/master
