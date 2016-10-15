@@ -44,7 +44,7 @@ def deploy_dse_opscenter_plus_node(compartment_id, subnet_id, availability_domai
    api = OracleBMC::Core::ComputeClient.new
    response = api.launch_instance(request)
    instance_id = response.data.id
-   response = api.get_instance(instance_id).wait_until(:lifecycle_state, OracleBMC::Core::Models::Instance::LIFECYCLE_STATE_RUNNING, max_wait_seconds:900)
+   response = api.get_instance(instance_id).wait_until(:lifecycle_state, OracleBMC::Core::Models::Instance::LIFECYCLE_STATE_RUNNING, max_wait_seconds:60)
    return get_public_private_ip_addresses(compartment_id, instance_id) 
 end 
 
