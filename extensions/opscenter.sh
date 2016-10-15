@@ -9,7 +9,7 @@ cloud_type=$1
 local_ip=
 while IFS=$': \t' read -a line ;do
     [ -z "${line%inet}" ] && ip=${line[${#line[1]}>4?1:2]} &&
-        [ "${ip#127.0.0.1}" ] && myip=$ip
+        [ "${ip#127.0.0.1}" ] && local_ip=$ip
   done< <(LANG=C /sbin/ifconfig)
 
 echo "Input to opscenter.sh is:"
