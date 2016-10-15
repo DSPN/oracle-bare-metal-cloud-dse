@@ -1,6 +1,6 @@
 require 'oraclebmc'
 require 'base64'
-require './helper.rb'
+require './ds_modules.rb'
 
 
 # Retrieving input arguments from command line
@@ -9,8 +9,8 @@ num_nodes = ARGV[1].to_i
 ssh_key_full_file_path = ARGV[2]
 
 # User provided input
-# Gilbert's compartment_id = 'ocid1.compartment.oc1..aaaaaaaawgpykgu7qgxq3c336hxl7nbtrbgjjbcbrcwp5vhluwglh5mlio2q'
-compartment_id = 'ocid1.tenancy.oc1..aaaaaaaaiecpb6fwi33blxe7x7s4btruzrzj77j2javhie3xevuifa2e7fnq'
+compartment_id = 'ocid1.compartment.oc1..aaaaaaaawgpykgu7qgxq3c336hxl7nbtrbgjjbcbrcwp5vhluwglh5mlio2q'
+# Tenancy's compartment_id = 'ocid1.tenancy.oc1..aaaaaaaaiecpb6fwi33blxe7x7s4btruzrzj77j2javhie3xevuifa2e7fnq'
 
 ssh_public_key = File.open(File.expand_path('/Users/gilbertlau/.ssh/bmc_rsa.pub'), "rb").read
 
@@ -100,7 +100,7 @@ ads_array.each do |ad|
    $x += 1
 end
 
-
+sleep(10)
 
 # Create OpsCenter in the first Availability Domain in ads_array
 dse_opscenter_node = deploy_dse_opscenter_plus_node(compartment_id, subnet_id[0], 
