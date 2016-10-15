@@ -14,7 +14,7 @@ while IFS=$': \t' read -a line ;do
 
 echo "Input to opscenter.sh is:"
 echo cloud_type $cloud_type >> opsCenter.sh.out
-echo seed_node_ip $local_ipr >> opsCenter.sh.out
+echo seed_node_ip $local_ip >> opsCenter.sh.out
 
 
 # Will point to a specific release
