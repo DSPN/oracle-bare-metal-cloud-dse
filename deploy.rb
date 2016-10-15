@@ -3,22 +3,22 @@ require 'base64'
 require './helper.rb'
 
 
-
 # Retrieving input arguments from command line
 compartment_name = ARGV[0]
 num_nodes = ARGV[1].to_i
-
+ssh_key_full_file_path = ARGV[2]
 
 # User provided input
-compartment_id = 'ocid1.compartment.oc1..aaaaaaaawgpykgu7qgxq3c336hxl7nbtrbgjjbcbrcwp5vhluwglh5mlio2q'
-ssh_public_key = File.open(File.expand_path('/Users/gilbertlau/BMC/bmc_rsa.pub'), "rb").read
+# Gilbert's compartment_id = 'ocid1.compartment.oc1..aaaaaaaawgpykgu7qgxq3c336hxl7nbtrbgjjbcbrcwp5vhluwglh5mlio2q'
+compartment_id = 'ocid1.tenancy.oc1..aaaaaaaaiecpb6fwi33blxe7x7s4btruzrzj77j2javhie3xevuifa2e7fnq'
 
+ssh_public_key = File.open(File.expand_path('/Users/gilbertlau/.ssh/bmc_rsa.pub'), "rb").read
 
 # System-wide input
 image_id = 'ocid1.image.oc1.phx.aaaaaaaao5onuwhhahp4vedzamvft73maw45dd4gm57ylglez4zjzhwmzaza'
 shape = 'BM.HighIO1.36'
-dse_sh ='dse.sh'
-opscenter_sh ='opscenter.sh'
+node_userdata_sh ='./extensions/node_userdata.sh'
+opscenter_userdata_sh ='./extensions/opscenter_userdata.sh'
 
 # Retrieve Availability Domain
 identity_client = OracleBMC::Identity::IdentityClient.new
@@ -52,6 +52,25 @@ internet_gateway_details.vcn_id = vcnId
 response = vcn_client.create_internet_gateway(internet_gateway_details)
 internet_gateway_id = response.data.id
 
+# Add Ingress/Egress security rules: 0.0.0.0/0 for TCP Protocol (any ports)
+vcn_client = OracleBMC::Core::VirtualNetworkClient.new
+response = vcn_client.list_security_lists(compartment_id, vcnId)
+default_security_list_id = response.data[0].id
+update_security_list_details = OracleBMC::Core::Models::UpdateSecurityListDetails.new
+ingress_rule_array = Array.new
+ingress_rule = OracleBMC::Core::Models::IngressSecurityRule.new
+ingress_rule.protocol = 6
+ingress_rule.source = '0.0.0.0/0'
+ingress_rule_array << ingress_rule
+egress_rule_array = Array.new
+egress_rule = OracleBMC::Core::Models::EgressSecurityRule.new
+egress_rule.protocol = 6
+egress_rule.destination = '0.0.0.0/0'
+egress_rule_array << egress_rule
+update_security_list_details.ingress_security_rules = ingress_rule_array
+update_security_list_details.egress_security_rules = egress_rule_array
+vcn_client.update_security_list(default_security_list_id, update_security_list_details) 
+
 # Add route rule - CIDR Block: 0.0.0.0/0 to default route table of the Virtual Cloud Network
 response = vcn_client.list_route_tables(compartment_id, vcnId) 
 rt_id_array = response.data.collect{ |user| user.id }
@@ -82,46 +101,28 @@ ads_array.each do |ad|
 end
 
 
-# Reading from dse.sh
-user_data = File.open(File.expand_path('/Users/gilbertlau/Documents/GitHub/oracle-bare-metal-cloud-dse/dse.sh'), "rb").read
-encoded64_str = Base64.urlsafe_encode64(user_data)
 
+# Create OpsCenter in the first Availability Domain in ads_array
+dse_opscenter_node = deploy_dse_opscenter_plus_node(compartment_id, subnet_id[0], 
+			ads_array[0], image_id, shape, ssh_public_key, opscenter_userdata_sh, node_userdata_sh)
+sleep(30)
 
-# Loop to create a DSE cluster
-$i = 0
-instance_array = Array.new
-while $i < num_nodes  do
-   puts("Deploying machine number #$i" )
+# Loop to create a DSE cluster: n number of nodes per Availability Domain
+# The OpsCenter node in the first AD will have one DSE node there already so skip one node in the first AD below
+seed_node_private_ip = dse_opscenter_node[2]
+$ad_index = 0
+ads_array.each do |ad|
+   subnet = subnet_id[$ad_index]
+   $i = 0
+   $i += 1 if ad.eql?(ads_array[0]) 
 
-   request = OracleBMC::Core::Models::LaunchInstanceDetails.new
-   request.display_name = "DataStax#$i"
-   request.subnet_id = subnet_id[$i]
-   request.availability_domain = ads_array[$i]
-   request.compartment_id = compartment_id
-   request.image_id = image_id
-   request.shape = shape
-   request.metadata = {'ssh_authorized_keys' => ssh_public_key,
-		       'user_data' => encoded64_str}
-   api = OracleBMC::Core::ComputeClient.new
-   response = api.launch_instance(request)
-   instance_id = response.data.id
-   response = api.get_instance(instance_id).wait_until(:lifecycle_state, OracleBMC::Core::Models::Instance::LIFECYCLE_STATE_RUNNING, max_wait_seconds:900)
-   instance_array << instance_id
-   $i += 1
+   while $i < num_nodes  do
+      deploy_dse_node(compartment_id, subnet, ad, image_id, shape, ssh_public_key, 
+		$ad_index.to_s + $i.to_s, node_userdata_sh, seed_node_private_ip)
+      sleep(30)
+      $i += 1
+   end
+
+   $ad_index += 1
 end
 
-
-# Generate a list of public and private ip addresses of BMC hosts
-host_ips_list = Array.new
-instance_array.each do |instance_id|
-   host_ips_list << get_public_private_ip_addresses(compartment_id, instance_id)   
-end
-
-puts(host_ips_list)
-
-
-# Spinning up OpsCenter
-
-
-
-# Spinning

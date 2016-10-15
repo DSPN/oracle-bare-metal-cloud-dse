@@ -2,7 +2,6 @@ require 'oraclebmc'
 require 'base64'
 
 
-
 # Obtaining the public and private IP addresses of a BMC instance
 def get_public_private_ip_addresses(compartment_id, instance_id)
    compute_client = OracleBMC::Core::ComputeClient.new
@@ -23,14 +22,17 @@ end
 
 
 # Deploy DSE OpsCenter
-def deploy_dse_opscenter(compartment_id, subnet_id, availability_domain, image_id, shape, ssh_public_key, ops_sh) 
+def deploy_dse_opscenter_plus_node(compartment_id, subnet_id, availability_domain, image_id, shape, ssh_public_key, opscenter_userdata_sh, node_userdata_sh) 
    puts("Deploying OpsCenter..." )
-  
-   user_data = File.open(File.expand_path(ops_sh), "rb").read
+ 
+   dse_user_data = File.open(File.expand_path(node_userdata_sh), "rb").read
+   dse_user_data = dse_user_data + "./node.sh" + "\n" 
+   ops_user_data = File.open(File.expand_path(opscenter_userdata_sh), "rb").read
+   user_data = dse_user_data + ops_user_data
    encoded64_str = Base64.urlsafe_encode64(user_data)
  
    request = OracleBMC::Core::Models::LaunchInstanceDetails.new
-   request.display_name = "DSE_OpsCenter"
+   request.display_name = "DataStax_Node_plus_OpsCenter"
    request.subnet_id = subnet_id
    request.availability_domain = availability_domain
    request.compartment_id = compartment_id
@@ -49,14 +51,15 @@ end
 
 
 # Deploy DSE node 
-def deploy_dse_opscenter(compartment_id, subnet_id, availability_domain, image_id, shape, ssh_public_key, suffix, dse_sh)
-   puts("Deploying DSE node..." )
+def deploy_dse_node(compartment_id, subnet_id, availability_domain, image_id, shape, ssh_public_key, suffix, node_userdata_sh, seed_node_ip)
+   puts('Deploying DSE node...' + suffix )
 
-   user_data = File.open(File.expand_path(dse_sh), "rb").read
+   user_data = File.open(File.expand_path(node_userdata_sh), "rb").read
+   user_data = user_data + "./node.sh" + " " + seed_node_ip + "\n"
    encoded64_str = Base64.urlsafe_encode64(user_data)
 
    request = OracleBMC::Core::Models::LaunchInstanceDetails.new
-   request.display_name = "DataStax_Node" + suffix.to_s
+   request.display_name = "DataStax_Node" + suffix
    request.subnet_id = subnet_id
    request.availability_domain = availability_domain
    request.compartment_id = compartment_id
@@ -68,7 +71,8 @@ def deploy_dse_opscenter(compartment_id, subnet_id, availability_domain, image_i
    api = OracleBMC::Core::ComputeClient.new
    response = api.launch_instance(request)
    instance_id = response.data.id
-   response = api.get_instance(instance_id).wait_until(:lifecycle_state, OracleBMC::Core::Models::Instance::LIFECYCLE_STATE_RUNNING, max_wait_seconds:900)
-   return get_public_private_ip_addresses(compartment_id, instance_id)
+#   response = api.get_instance(instance_id).wait_until(:lifecycle_state, OracleBMC::Core::Models::Instance::LIFECYCLE_STATE_RUNNING, max_wait_seconds:900)
+#   return get_public_private_ip_addresses(compartment_id, instance_id)
 end
+
 
