@@ -4,15 +4,15 @@ require './ds_modules.rb'
 
 
 # Retrieving input arguments from command line
-compartment_name = ARGV[0]
+compartment_id = ARGV[0]
 num_nodes = ARGV[1].to_i
 ssh_key_full_file_path = ARGV[2]
 
 # User provided input
-compartment_id = 'ocid1.compartment.oc1..aaaaaaaawgpykgu7qgxq3c336hxl7nbtrbgjjbcbrcwp5vhluwglh5mlio2q'
+# compartment_id = 'ocid1.compartment.oc1..aaaaaaaawgpykgu7qgxq3c336hxl7nbtrbgjjbcbrcwp5vhluwglh5mlio2q'
 # Tenancy's compartment_id = 'ocid1.tenancy.oc1..aaaaaaaaiecpb6fwi33blxe7x7s4btruzrzj77j2javhie3xevuifa2e7fnq'
 
-ssh_public_key = File.open(File.expand_path('/Users/gilbertlau/.ssh/bmc_rsa.pub'), "rb").read
+ssh_public_key = File.open(File.expand_path(ssh_key_full_file_path), "rb").read
 
 # System-wide input
 image_id = 'ocid1.image.oc1.phx.aaaaaaaao5onuwhhahp4vedzamvft73maw45dd4gm57ylglez4zjzhwmzaza'
