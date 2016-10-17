@@ -10,12 +10,6 @@ compartment_id = ARGV[0]
 num_nodes = ARGV[1].to_i
 ssh_key_full_file_path = ARGV[2]
 
-<<<<<<< HEAD
-=======
-# User provided input
-# compartment_id = 'ocid1.compartment.oc1..aaaaaaaawgpykgu7qgxq3c336hxl75vhluwglh5mlio2q'
-# Tenancy's compartment_id = 'ocid1.tenancy.oc1..aaaaaaaaiecpb6fwi33blxe7x7s477j2javhie3xevuifa2e7fnq'
->>>>>>> origin/master
 
 #### Retrieve ssh public key
 ssh_public_key = File.open(File.expand_path(ssh_key_full_file_path), "rb").read
