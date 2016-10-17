@@ -1,5 +1,5 @@
 # oracle-bare-metal-cloud-dse
-Scripts and instructions to deploy DSE to Oracle Bare Metal Cloud
+Scripts and instructions to deploy DataStax Enterprise (DSE) to Oracle Bare Metal Cloud
 
 ## Prerequisites
 
@@ -7,76 +7,49 @@ You will need to install the Ruby SDK for Oracle Bare Metal Cloud.
 
 Login to https://console.us-az-phoenix-1.oracleiaas.com/#/a/  The Ruby SDK is available [here](https://docs.us-az-phoenix-1.oracleiaas.com/tools/ruby/latest/download/oraclebmc-0.6.1.gem).  Doc is available at [here](https://docs.us-az-phoenix-1.oracleiaas.com/tools/ruby/latest/frames.html).  Download the SDK and install it using the command:
 
-    gem install oraclebmc-0.6.1.gem
+gem install oraclebmc-0.8.0.gem
 
-If all went well you should see:
+You will now need to create a config file for the SDK as detailed in the documentation.  The default location and file name of the config file are \<your home directory\>/.oraclebmc and config respectively.
 
-![](./img/geminstall.png)
+Next download our git project as follows:
 
-You will now need to create a config file for the SDK as detailed in the documentation.
+```
+git clone https://github.com/DSPN/oracle-bare-metal-cloud-dse
+cd oracle-bare-metal-cloud-dse
+```
 
-At this point your Ruby SDK should be all set up.  You can run this command to test if your setup is correct:
+You can now run this command to verify your setup:
 
-    irb test.rb
+    ruby test.rb
 
-## Setting up Instances
+It should return a list of users belonging to your Oracle Bare Metal Cloud tenancy like the following:
 
-First, you'll need to create a Cloud Network.  In this case we've called ours "mycloudnetwork."  When you create the Cloud Network, it creates three subnets, one in each availability domain.  We are going to map availability domains to racks.
+![](./img/test_rb.png)
 
-We are going to use the root compartment that is created by default.  For the compartment ID, specify your "Tenancy ID."
+## Deploying DataStax Enterprise cluster and DataStax OpsCenter
 
-You will need to edit the subnet_id, compartment_id and ssh_public_key to the values in your environment.
+At this point, you are all set to go to run the following script to deploy your DataStax Enterprise cluster and DataStax OpsCenter.  Your will need to pass in three arguments to the script:
 
-When complete you can run the following command to deploy your cluster:
+* Compartment ID
+* Number of nodes in each Availability Domain
+* Your SSH public key's full file path name
 
-    irb createMachine.rb
-    
-On completion you can log into the Console to view your machines.
+```
+./deploy.rb <compartment_id> <number of nodes> <ssh_key_full_path_name>
+```
 
-## Installing DataStax Enterprise
+Now you can sit back and relax.  The whole process will take about 10 to 20 minutes long depending on the number of nodes to deploy.  You can now go back to the Oracle BareM Metal Cloud console to check if all your nodes are up and running.  Once 10 to 15 minutes have passed, you can try to point your browser at port 8888 of the public IP address of node named "DataStax_Node_plus_OpsCenter".  If the OpsCenter is still not yet available, you can refresh your browser every couple minutes.  Initially, you might see the cluster containing only one DSE node.  You will gradually see more nodes coming up as they are being provisioned.
 
-Now that your instances are running, we are going to install DataStax Enterprise (DSE).  This will be a two step process:
-* Install OpsCenter
-* Use OpsCenter Lifecycle Manager (LCM) to install and configure DSE on each node
-
-You will need to open a terminal session to the each machine.  To ssh to the machine, find its public IP in the console and then run the command:
-
-    ssh -i ~/.ssh/id_rsa opc@<IP Address>
-
-Oracle Linux runs iptables by default.  We'll need to stop iptables for the cluster to be able to communicate.  The machines also need their drives mounted.  We have provided a script to automate this. You will need to do run the script on each node.
-
-    curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/bin/dse.sh > dse.sh
-    chmod +x dse.sh
-    ./dse.sh
-
-Now, on the first machine, datastax0, run these commands to get an install script that will set up OpsCenter:
-
-    curl https://raw.githubusercontent.com/DSPN/oracle-bare-metal-cloud-dse/master/bin/opscenter.sh > opscenter.sh
-    chmod +x opscenter.sh
-    ./opscenter.sh
-
-Ok, now OpsCenter is installed and running.  At this point we need to open port 8888 in the console so we can access OpsCenter and run LCM.
-
-At this point OpsCenter should be accessible on port 8888 of the public IP address of node datastax0:
-
-![](./img/welcometoopscenter.png)
-
-Now we are going to click "Create a new cluster" and use LCM to deploy DSE to each of our three nodes.  
-
-A few notes:
-* Use the private IP addresses for your nodes
-* In your config profile change the directories for data, commit log and caches from /var/lib/cassandra/... to /cassandra/...
-
-When complete your cluster should show three nodes:
-
-![](./img/opscentercluster.png)
+![](./img/opscenter.png)
 
 ## Testing the Cluster
 
-Now you can login and try running [Cassandra Stress](https://docs.datastax.com/en/cassandra/3.x/cassandra/tools/toolsCStress.html).
+Now you can ssh into one of your DSE cluster nodes and try running [Cassandra Stress](https://docs.datastax.com/en/cassandra/3.x/cassandra/tools/toolsCStress.html) as follows:
 
-    cassandra-stress write n=1000000 cl=QUORUM -rate threads=50 -mode native cql3 user=cassandra password=cassandra -node 10.0.2.4 -schema "replication(factor=3)"
+```
+cassandra-stress write n=1000000 cl=QUORUM -rate threads=50 -mode native cql3 user=cassandra password=cassandra -node <any DSE node internal IP address>  -schema "replication(factor=3)"
+```
 
-## Deleting the Cluster
+## Deleting the Cluster and its associated virtual cloud network
 
-To delete the cluster, login to the console and click "terminate" on each node.
+To delete the cluster, login to Oracle Bare Metal Cloud console and click "terminate" on each node and the virtual cloud network named "DataStax_VCN_001" which was created as part of your DSE cluster deployment.
