@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-##### First argument contains seed_plus_opscenter_node_ip if provided
+##### First argument contains the BMC region for provisioning
+region=$1
+
+##### Second argument contains seed_plus_opscenter_node_ip if provided
 
 ##### Turn off the firewall
 
@@ -40,10 +43,10 @@ unzip master.zip
 cd install-datastax-redhat-master/bin
 
 # if seed_plus_opscenter_node_ip is not defined then pass local_ip, else pass seed_plus_opscenter_node_ip
-if [ -z "$1" ]
+if [ -z "$2" ]
   then
-    ./dse.sh bmc $local_ip us-phoenix-1 $local_ip
+    ./dse.sh bmc $local_ip $region $local_ip
   else
-    ./dse.sh bmc $1 us-phoenix-1 $1
+    ./dse.sh bmc $2 $region $2
 fi
 
