@@ -33,7 +33,6 @@ opscenter_userdata_sh ='./extensions/opscenter_userdata.sh'
 #### Retrieve Availability Domain
 identity_client = OracleBMC::Identity::IdentityClient.new
 response = identity_client.list_availability_domains(compartment_id)
-#arr = response.data.each { |user| puts user.name } 
 ads_array = Array.new
 ads_array = response.data.collect{ |user| user.name }
 
