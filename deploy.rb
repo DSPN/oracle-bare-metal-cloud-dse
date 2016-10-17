@@ -133,7 +133,7 @@ ads_array.each do |ad|
      
       # Oracle BMC implements throttling control so adding a delay to prevent
       # sending too many API requests within a short time period 
-      sleep(15)
+      sleep(20)
 
       $i += 1
    end
