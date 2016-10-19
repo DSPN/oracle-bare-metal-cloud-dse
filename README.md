@@ -54,4 +54,4 @@ cassandra-stress write n=1000000 cl=QUORUM -rate threads=50 -mode native cql3 us
 
 ## Deleting the Cluster and its associated virtual cloud network
 
-To delete the cluster, login to Oracle Bare Metal Cloud console and click "terminate" on each node and the virtual cloud network named "ds_vcn_network" which was created as part of your DSE cluster deployment.
+To delete the cluster, login to Oracle Bare Metal Cloud console and click "Terminate" on each node and the virtual cloud network named "ds_vcn_network" which was created as part of your DSE cluster deployment.
