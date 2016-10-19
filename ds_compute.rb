@@ -2,26 +2,6 @@ require 'oraclebmc'
 require 'base64'
 
 
-#### Obtaining the public and private IP addresses of a BMC instance
-def get_public_private_ip_addresses(compartment_id, instance_id)
-
-   compute_client = OracleBMC::Core::ComputeClient.new
-   response = compute_client.list_vnic_attachments(compartment_id, {instance_id: instance_id})
-   vnic_array = response.data.collect{ |user| user.vnic_id }
-   vnic_id = vnic_array[0]
-   vcn_client = OracleBMC::Core::VirtualNetworkClient.new
-   vnic_record = vcn_client.get_vnic(vnic_id)
-   public_ip = vnic_record.data.public_ip
-   private_ip = vnic_record.data.private_ip
-   ip_array = Array.new
-   ip_array << instance_id
-   ip_array << public_ip
-   ip_array << private_ip
-   return ip_array
-end
-
-
-
 #### Deploy a DSE seed node and DSE OpsCenter
 def deploy_dse_opscenter_plus_node(region, compartment_id, subnet_id, availability_domain, image_id, shape, 
 	ssh_public_key, opscenter_userdata_sh, node_userdata_sh)

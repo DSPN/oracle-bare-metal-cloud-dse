@@ -2,7 +2,8 @@
 
 require 'oraclebmc'
 require 'base64'
-require './ds_modules.rb'
+require './ds_compute.rb'
+require './ds_network.rb'
 
 
 #### Retrieving input arguments from command line
@@ -30,6 +31,19 @@ node_userdata_sh ='./extensions/node_userdata.sh'
 opscenter_userdata_sh ='./extensions/opscenter_userdata.sh'
 
 
+#### Define open ports for security rules for ingress TCP traffic
+# 22 => ssh secure access, 
+# 8888 => OpsCenter web site port, 
+# 9042 => CQL native clients port,
+# 9160 => C* client port (Thrift) port: Opscenter agents, 
+# 7000 => C* inter-node cluster communications port,
+# 7001 => C* SSL internode cluster communication port.
+# 443, 8443, 61620, 61621 => other OpsCenter communication ports.
+# tcp_code 6 => TCP protocol
+open_port_array = Array[22, 443, 7000, 7001, 8443, 8888, 9042, 9160, 61620, 61621]
+tcp_code = 6
+
+
 #### Retrieve Availability Domain
 identity_client = OracleBMC::Identity::IdentityClient.new
 response = identity_client.list_availability_domains(compartment_id)
@@ -39,12 +53,14 @@ ads_array = response.data.collect{ |user| user.name }
 
 #### Set up Virtual Cloud Network 
 puts("Deploying BMC Virtual Cloud Network and its sub-components ....." )
+vcn_name = "ds_vcn_network"
+
 
 # Create a Virtual Cloud Network for the DataStax Enterprise Cluster 
 vcn_details = OracleBMC::Core::Models::CreateVcnDetails.new
 vcn_details.cidr_block = '10.0.0.0/16'
 vcn_details.compartment_id = compartment_id
-vcn_details.display_name = "DataStax_VCN_001"
+vcn_details.display_name = vcn_name
 vcn_client = OracleBMC::Core::VirtualNetworkClient.new
 response = vcn_client.create_vcn(vcn_details)
 vcnId = response.data.id
@@ -58,17 +74,20 @@ internet_gateway_details.vcn_id = vcnId
 response = vcn_client.create_internet_gateway(internet_gateway_details)
 internet_gateway_id = response.data.id
 
-# Add Ingress/Egress security rules: 0.0.0.0/0 for TCP Protocol (any ports)
-# protocol value 6 = TCP
+# Add Ingress/Egress security rules: 0.0.0.0/0 for TCP Protocol 
 vcn_client = OracleBMC::Core::VirtualNetworkClient.new
 response = vcn_client.list_security_lists(compartment_id, vcnId)
 default_security_list_id = response.data[0].id
 update_security_list_details = OracleBMC::Core::Models::UpdateSecurityListDetails.new
 ingress_rule_array = Array.new
-ingress_rule = OracleBMC::Core::Models::IngressSecurityRule.new
-ingress_rule.protocol = 6
-ingress_rule.source = '0.0.0.0/0'
-ingress_rule_array << ingress_rule
+
+# Build ingress rule array
+open_port_array.each do |port|
+   ingress_rule = set_security_rule(tcp_code, port, port)
+   ingress_rule_array << ingress_rule
+end
+
+# Add Egress security rules
 egress_rule_array = Array.new
 egress_rule = OracleBMC::Core::Models::EgressSecurityRule.new
 egress_rule.protocol = 6
@@ -107,6 +126,7 @@ ads_array.each do |ad|
    
    $x += 1
 end
+
 
 # Delay is added to ensure subnets are ready for BMC instance provisioning
 sleep(10)
