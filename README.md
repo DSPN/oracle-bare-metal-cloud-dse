@@ -38,7 +38,11 @@ At this point, you are all set to go to run the following script to deploy your 
 
 ```
 ./deploy.rb  <compartment_id>  <number of nodes>  <ssh_key_full_path_name>
+
+For example,  ./deploy.rb  ocid1.compartment.oc1..aaaaaaawgpykgu7qgxq3c369hxl7nbtrbgjjbcbrcwp5vhluwglh5mlcm2q  1  /Users/gilbertlau/.ssh/bmc_rsa.pub
 ```
+
+*If you see this error message: "/usr/local/lib/ruby/gems/2.3.0/gems/oraclebmc-0.8.0/lib/oraclebmc/api_client.rb:163:in `call_api_inner': The limit for this tenancy has been exceeded. (OracleBMC::ServiceError)" when running the above command, you are likely run into Service Limits for your tenancy, you can increase the service limits by following the steps [here](https://docs.us-phoenix-1.oraclecloud.com/Content/General/Concepts/servicelimits.htm).*
 
 Now you can sit back and relax.  The whole process will take about 15 to 20 minutes long depending on the number of nodes to deploy.  You can now go back to the Oracle BareM Metal Cloud console to check if all your nodes are up and running.  Once 10 to 15 minutes have passed, you can try to point your browser at port 8888 of the public IP address of node named "DataStax_Node_plus_OpsCenter".  If the OpsCenter is still not yet available, you can refresh your browser every couple minutes.  Initially, you might see the cluster containing only one DSE node.  You will gradually see more nodes coming up as they are being provisioned.
 
