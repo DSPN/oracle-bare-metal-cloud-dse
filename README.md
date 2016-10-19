@@ -37,7 +37,7 @@ At this point, you are all set to go to run the following script to deploy your 
 * Your SSH public key's full file path name
 
 ```
-./deploy.rb <compartment_id> <number of nodes> <ssh_key_full_path_name>
+./deploy.rb  <compartment_id>  <number of nodes>  <ssh_key_full_path_name>
 ```
 
 Now you can sit back and relax.  The whole process will take about 15 to 20 minutes long depending on the number of nodes to deploy.  You can now go back to the Oracle BareM Metal Cloud console to check if all your nodes are up and running.  Once 10 to 15 minutes have passed, you can try to point your browser at port 8888 of the public IP address of node named "DataStax_Node_plus_OpsCenter".  If the OpsCenter is still not yet available, you can refresh your browser every couple minutes.  Initially, you might see the cluster containing only one DSE node.  You will gradually see more nodes coming up as they are being provisioned.
