@@ -27,6 +27,7 @@ mount /dev/vg-nvme/lv /mnt/data1
 chmod 777 /mnt/data1
 
 
+
 ##### Installing DataStax Node
 
 # Retrieve local IP address

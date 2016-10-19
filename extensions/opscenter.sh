@@ -13,8 +13,8 @@ while IFS=$': \t' read -a line ;do
   done< <(LANG=C /sbin/ifconfig)
 
 echo "Input to opscenter.sh is:"
-echo cloud_type $cloud_type >> opsCenter.sh.out
-echo seed_node_ip $local_ip >> opsCenter.sh.out
+echo cloud_type $cloud_type
+echo seed_node_ip $local_ip
 
 
 # Will point to a specific release
