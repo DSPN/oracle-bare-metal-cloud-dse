@@ -40,7 +40,7 @@ opscenter_userdata_sh ='./extensions/opscenter_userdata.sh'
 # 7001 => C* SSL internode cluster communication port.
 # 443, 8443, 61620, 61621 => other OpsCenter communication ports.
 # tcp_code 6 => TCP protocol
-open_port_array = Array[22, 443, 7000, 7001, 8443, 8888, 9042, 9160, 61620, 61621]
+open_port_array = Array[22, 443, 7000, 7001, 7199, 8443, 8888, 9042, 9160, 61620, 61621]
 tcp_code = 6
 
 
