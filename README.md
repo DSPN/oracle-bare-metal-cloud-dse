@@ -5,7 +5,7 @@ Scripts and instructions to deploy DataStax Enterprise (DSE) to Oracle Bare Meta
 
 You will need to install the Ruby SDK for Oracle Bare Metal Cloud.
 
-Login to https://console.us-az-phoenix-1.oracleiaas.com/#/a/  The Ruby SDK is available [here](https://docs.us-phoenix-1.oraclecloud.com/tools/ruby/latest/download/oracle-bmc-ruby-sdk-1.0.0.zip).  Doc is available at [here](https://docs.us-az-phoenix-1.oracleiaas.com/tools/ruby/latest/frames.html).  Download the SDK and install it using the command:
+Login to https://console.us-az-phoenix-1.oracleiaas.com/#/a/  The Ruby SDK is available [here](https://docs.us-phoenix-1.oraclecloud.com/tools/ruby/latest/download/oracle-bmcs-ruby-sdk.zip).  Doc is available at [here](https://docs.us-az-phoenix-1.oracleiaas.com/tools/ruby/latest/frames.html).  Download the SDK and install it using the command:
 
 ```
 gem install oraclebmc-0.8.0.gem
