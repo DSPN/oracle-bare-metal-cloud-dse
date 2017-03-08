@@ -8,7 +8,7 @@ You will need to install the Ruby SDK for Oracle Bare Metal Cloud.
 Login to https://console.us-az-phoenix-1.oracleiaas.com/#/a/  The Ruby SDK is available [here](https://docs.us-phoenix-1.oraclecloud.com/tools/ruby/latest/download/oracle-bmcs-ruby-sdk.zip).  Doc is available at [here](https://docs.us-az-phoenix-1.oracleiaas.com/tools/ruby/latest/frames.html).  Download the SDK and install it using the command:
 
 ```
-gem install oraclebmc-0.8.0.gem
+gem install oraclebmc-1.1.1.gem
 ```
 
 You will now need to create a config file for the SDK as detailed in the [documentation](https://docs.us-az-phoenix-1.oracleiaas.com/tools/ruby/latest/index.html#label-Configuring+the+SDK).  The default location and file name of the config file are \<your home directory\>/.oraclebmc and config respectively.
